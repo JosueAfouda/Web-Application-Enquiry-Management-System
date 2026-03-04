@@ -211,7 +211,7 @@ export const api = {
     async approveRevision(
       quotationId: string,
       revisionId: string,
-      remarks?: string,
+      remarks: string,
     ): Promise<QuotationRevision> {
       const { data } = await http.post<QuotationRevision>(
         `/quotations/${quotationId}/revisions/${revisionId}/approve`,
@@ -222,7 +222,7 @@ export const api = {
     async rejectRevision(
       quotationId: string,
       revisionId: string,
-      remarks?: string,
+      remarks: string,
     ): Promise<QuotationRevision> {
       const { data } = await http.post<QuotationRevision>(
         `/quotations/${quotationId}/revisions/${revisionId}/reject`,

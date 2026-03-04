@@ -44,6 +44,10 @@ class QuotationActionRequest(BaseModel):
     remarks: str | None = None
 
 
+class QuotationApprovalActionRequest(BaseModel):
+    remarks: str = Field(min_length=1, max_length=2000)
+
+
 class QuotationRead(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 

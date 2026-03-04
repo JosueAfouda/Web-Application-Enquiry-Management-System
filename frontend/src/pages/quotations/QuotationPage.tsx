@@ -172,7 +172,7 @@ export function QuotationPage(): ReactNode {
   })
 
   const approveMutation = useMutation({
-    mutationFn: () => api.quotations.approveRevision(quotationId, selectedRevisionId, actionRemarks || undefined),
+    mutationFn: () => api.quotations.approveRevision(quotationId, selectedRevisionId, actionRemarks.trim()),
     onSuccess: () => {
       toast.success('Revision approved')
       setActionRemarks('')
@@ -182,7 +182,7 @@ export function QuotationPage(): ReactNode {
   })
 
   const rejectMutation = useMutation({
-    mutationFn: () => api.quotations.rejectRevision(quotationId, selectedRevisionId, actionRemarks || undefined),
+    mutationFn: () => api.quotations.rejectRevision(quotationId, selectedRevisionId, actionRemarks.trim()),
     onSuccess: () => {
       toast.success('Revision rejected')
       setActionRemarks('')
@@ -299,6 +299,7 @@ export function QuotationPage(): ReactNode {
 
   const pendingApproval = Boolean(revision?.submitted_at && !revision.approved_at && !revision.rejected_at)
   const approvedRevision = Boolean(revision?.approved_at && !revision?.rejected_at)
+  const approvalRemarks = actionRemarks.trim()
 
   const productMap = new Map(products.map((row) => [row.id, row.name]))
 
@@ -386,8 +387,11 @@ export function QuotationPage(): ReactNode {
                       <Textarea
                         value={actionRemarks}
                         onChange={(event) => setActionRemarks(event.target.value)}
-                        placeholder="Action remarks (optional)"
+                        placeholder="Action remarks (required for approve/reject)"
                       />
+                      {canApproveReject && pendingApproval && !approvalRemarks ? (
+                        <p className="text-xs text-rose-700">Approval or rejection remarks are required.</p>
+                      ) : null}
                       <div className="flex flex-wrap gap-2">
                         {canEditRevisions ? (
                           <Button
@@ -401,7 +405,7 @@ export function QuotationPage(): ReactNode {
                           <Button
                             variant="secondary"
                             onClick={() => approveMutation.mutate()}
-                            disabled={!pendingApproval || approveMutation.isPending}
+                            disabled={!pendingApproval || !approvalRemarks || approveMutation.isPending}
                           >
                             Approve
                           </Button>
@@ -410,7 +414,7 @@ export function QuotationPage(): ReactNode {
                           <Button
                             variant="danger"
                             onClick={() => rejectMutation.mutate()}
-                            disabled={!pendingApproval || rejectMutation.isPending}
+                            disabled={!pendingApproval || !approvalRemarks || rejectMutation.isPending}
                           >
                             Reject
                           </Button>

@@ -11,6 +11,7 @@ from app.models.quotation import Quotation, QuotationRevision
 from app.models.user import User
 from app.schemas.quotations import (
     QuotationActionRequest,
+    QuotationApprovalActionRequest,
     QuotationCreateRequest,
     QuotationDetailRead,
     QuotationRead,
@@ -102,7 +103,7 @@ def submit_revision(
 def approve_revision(
     quotation_id: uuid.UUID,
     revision_id: uuid.UUID,
-    payload: QuotationActionRequest,
+    payload: QuotationApprovalActionRequest,
     current_user: User = Depends(require_roles(Roles.ADMIN, Roles.SUPER_ADMIN)),
     service: QuotationService = Depends(get_quotation_service),
 ) -> QuotationRevision:
@@ -116,7 +117,7 @@ def approve_revision(
 def reject_revision(
     quotation_id: uuid.UUID,
     revision_id: uuid.UUID,
-    payload: QuotationActionRequest,
+    payload: QuotationApprovalActionRequest,
     current_user: User = Depends(require_roles(Roles.ADMIN, Roles.SUPER_ADMIN)),
     service: QuotationService = Depends(get_quotation_service),
 ) -> QuotationRevision:
