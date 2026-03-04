@@ -52,9 +52,7 @@ class ReportsService:
         status: str | None,
     ) -> bytes:
         stmt = (
-            select(Enquiry)
-            .options(selectinload(Enquiry.items))
-            .order_by(Enquiry.created_at.desc())
+            select(Enquiry).options(selectinload(Enquiry.items)).order_by(Enquiry.created_at.desc())
         )
         stmt = self._apply_date_filters_date(
             stmt,

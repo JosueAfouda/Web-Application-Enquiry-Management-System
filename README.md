@@ -4,12 +4,12 @@ Web-based Enquiry Management System (EMS) MVP for a pharmaceutical export/tradin
 
 ## Current Status
 
-Phase 0 (foundation bootstrap) is implemented:
-- FastAPI app scaffold with `/health`
-- Environment-driven configuration (`.env`)
-- Dockerfile + Docker Compose (`api` + `db`)
-- Lint/type/test tooling (`ruff`, `mypy`, `pytest`, `pre-commit`)
-- Local smoke script (`scripts/smoke_local.sh`)
+EMS MVP backend + frontend are implemented:
+- FastAPI backend with PostgreSQL and Alembic migrations
+- React + TypeScript frontend (Vite build served by Nginx)
+- Docker Compose stack (`db`, `api`, `web`)
+- RBAC, masters/imports, enquiry workflow, quotations/revisions/approvals, PO/invoice/payment/delivery, KPI reporting/export
+- Curl smoke scripts (`scripts/smoke_local.sh`, `scripts/smoke_frontend.sh`)
 
 ## Quick Start (Local)
 
@@ -46,6 +46,10 @@ docker compose down
 Note:
 - The database is intentionally **not** exposed on host ports (`5432`/`5433` safe).
 - The API is exposed on `http://localhost:8000`.
+- The frontend is exposed on `http://localhost:3000`.
+
+Frontend workflow and happy-path checklist:
+- See `FRONTEND_USER_GUIDE.md`.
 
 ## Database Migrations (Alembic)
 

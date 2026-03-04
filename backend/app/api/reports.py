@@ -40,9 +40,7 @@ def export_enquiries(
     payload = service.export_enquiries(date_from=date_from, date_to=date_to, status=status)
     return Response(
         content=payload,
-        media_type=(
-            "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-        ),
+        media_type=("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"),
         headers={"Content-Disposition": 'attachment; filename="enquiries.xlsx"'},
     )
 
@@ -58,9 +56,7 @@ def export_quotations(
     payload = service.export_quotations(date_from=date_from, date_to=date_to, status=status)
     return Response(
         content=payload,
-        media_type=(
-            "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-        ),
+        media_type=("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"),
         headers={"Content-Disposition": 'attachment; filename="quotations.xlsx"'},
     )
 
@@ -76,9 +72,7 @@ def export_invoices(
     payload = service.export_invoices(date_from=date_from, date_to=date_to, status=status)
     return Response(
         content=payload,
-        media_type=(
-            "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-        ),
+        media_type=("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"),
         headers={"Content-Disposition": 'attachment; filename="invoices.xlsx"'},
     )
 
@@ -94,8 +88,6 @@ def export_payments(
     payload = service.export_payments(date_from=date_from, date_to=date_to, method=method)
     return Response(
         content=payload,
-        media_type=(
-            "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-        ),
+        media_type=("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"),
         headers={"Content-Disposition": 'attachment; filename="payments.xlsx"'},
     )

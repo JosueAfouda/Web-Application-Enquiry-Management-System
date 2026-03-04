@@ -60,4 +60,3 @@ def test_http_error_has_consistent_schema() -> None:
     assert payload["error"]["code"] == "http_401"
     assert payload["error"]["message"] == "Not authenticated"
     assert payload["error"]["request_id"] == "test-req-id"
-
