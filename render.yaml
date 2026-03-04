@@ -38,3 +38,20 @@ services:
         value: PO_CREATED
       - key: CORS_ORIGINS
         value: https://ems-web.onrender.com,http://localhost:3000,http://localhost:8000
+
+  - type: web
+    name: ems-web
+    runtime: static
+    plan: free
+    buildCommand: "cd frontend && npm ci && npm run build"
+    staticPublishPath: ./frontend/dist
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
+    envVars:
+      - key: VITE_API_URL
+        fromService:
+          type: web
+          name: ems-api
+          envVarKey: RENDER_EXTERNAL_URL
