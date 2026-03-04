@@ -9,6 +9,8 @@ EMS MVP backend + frontend are implemented:
 - React + TypeScript frontend (Vite build served by Nginx)
 - Docker Compose stack (`db`, `api`, `web`)
 - RBAC, masters/imports, enquiry workflow, quotations/revisions/approvals, PO/invoice/payment/delivery, KPI reporting/export
+- Frontend API availability checks (`/health`) with retry UX on login and app shell
+- Dashboard `DEMO DATA` button (Admin/SuperAdmin) to seed an end-to-end sample flow
 - Curl smoke scripts (`scripts/smoke_local.sh`, `scripts/smoke_frontend.sh`)
 
 ## Quick Start (Local)
@@ -50,6 +52,11 @@ Note:
 
 Frontend workflow and happy-path checklist:
 - See `FRONTEND_USER_GUIDE.md`.
+
+Quick UI demo path:
+1. Login with `admin / admin`.
+2. Open Dashboard and click `DEMO DATA`.
+3. Validate seeded records across Masters, Enquiries, Commercial, and Reports.
 
 ## Database Migrations (Alembic)
 
@@ -232,6 +239,21 @@ Every response includes `X-Request-ID`. API errors are normalized to:
   }
 }
 ```
+
+## Render Deployment (Blueprint)
+
+This repository includes `render.yaml` for two services and one PostgreSQL database:
+- `ems-api` (`type: web`, `runtime: python`)
+- `ems-web` (`type: web`, `runtime: static`)
+- `ems-postgres` database
+
+Deployment notes:
+- API start command runs: database wait -> Alembic migration -> Uvicorn start.
+- Frontend build is executed from `frontend/` and published from `frontend/dist`.
+- Frontend gets API base URL from:
+  - `VITE_API_URL <- ems-api.RENDER_EXTERNAL_URL`
+- API CORS allow-list is configured through `CORS_ORIGINS` in `render.yaml`.
+- If Render free database/web plan is unavailable in your account/region, switch plan values in `render.yaml` before syncing.
 
 ## Quality Checks
 
