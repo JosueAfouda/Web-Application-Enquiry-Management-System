@@ -1,12 +1,14 @@
-import type { ReactNode } from 'react'
+import { useCallback, useEffect, useState, type ReactNode } from 'react'
 
 import {
+  AlertTriangle,
   BarChart3,
   ClipboardList,
   Factory,
   FileSpreadsheet,
   FileText,
   LayoutDashboard,
+  Loader2,
   LogOut,
   Package,
   Quote,
@@ -15,7 +17,9 @@ import {
 import { NavLink, Outlet, useLocation } from 'react-router-dom'
 
 import { useAuth } from '../../context/AuthContext'
-import { formatRole } from '../../lib/format'
+import { api } from '../../lib/api'
+import { formatDate, formatRole } from '../../lib/format'
+import { apiBaseUrl } from '../../lib/http'
 import { Button } from '../ui/button'
 
 interface NavItem {
@@ -90,8 +94,32 @@ function buildBreadcrumb(pathname: string): string {
 export function AppShell(): ReactNode {
   const { user, hasRole, logout } = useAuth()
   const location = useLocation()
+  const [isApiAvailable, setIsApiAvailable] = useState<boolean>(true)
+  const [isApiCheckPending, setIsApiCheckPending] = useState<boolean>(true)
+  const [lastApiCheckAt, setLastApiCheckAt] = useState<string | null>(null)
 
   const allowedItems = navItems.filter((item) => hasRole(...item.roles))
+
+  const checkApiHealth = useCallback(async () => {
+    setIsApiCheckPending(true)
+    try {
+      await api.system.health()
+      setIsApiAvailable(true)
+    } catch {
+      setIsApiAvailable(false)
+    } finally {
+      setIsApiCheckPending(false)
+      setLastApiCheckAt(new Date().toISOString())
+    }
+  }, [])
+
+  useEffect(() => {
+    void checkApiHealth()
+    const intervalId = window.setInterval(() => {
+      void checkApiHealth()
+    }, 15000)
+    return () => window.clearInterval(intervalId)
+  }, [checkApiHealth])
 
   return (
     <div className="min-h-screen bg-app-gradient text-slate-900">
@@ -155,6 +183,29 @@ export function AppShell(): ReactNode {
                 </NavLink>
               ))}
             </div>
+            {!isApiAvailable ? (
+              <div className="mt-3 flex flex-wrap items-center justify-between gap-3 rounded-md border border-amber-200 bg-amber-50 px-3 py-2">
+                <div className="flex items-center gap-2 text-amber-900">
+                  {isApiCheckPending ? (
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                  ) : (
+                    <AlertTriangle className="h-4 w-4" />
+                  )}
+                  <p className="text-xs">
+                    API is unavailable at <span className="font-mono">{apiBaseUrl}</span>. Last check:{' '}
+                    {formatDate(lastApiCheckAt, true)}
+                  </p>
+                </div>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => void checkApiHealth()}
+                  disabled={isApiCheckPending}
+                >
+                  Retry
+                </Button>
+              </div>
+            ) : null}
           </header>
 
           <main className="space-y-4">

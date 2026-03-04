@@ -44,26 +44,31 @@ Seed user from migrations:
 ## 4. Happy-Path Validation (UI)
 
 1. Login at `/login`.
-2. Create masters:
-   - Customers
-   - Manufacturers
-   - Products
-3. (Optional) Use `Masters > Imports` and upload sample Excel/CSV.
-4. Create enquiry at `Enquiries > Create Enquiry` with at least one item.
-5. Open enquiry detail and create quotation.
-6. On quotation page:
-   - Create revision
-   - Submit revision
-   - Approve revision
-   - Create Customer PO and/or RTM PO
-7. Open `Commercial`:
-   - Create invoice
-   - Add payment
-   - Attempt overpayment (should show backend 400 message)
-   - Create delivery and add delivery events
-8. Open `Reports`:
-   - Verify KPI cards load from `/reports/kpis`
-   - Download `enquiries.xlsx`, `quotations.xlsx`, `invoices.xlsx`, `payments.xlsx`
+2. Optional fast-start for demo:
+   - On `Dashboard`, click `DEMO DATA` (Admin/SuperAdmin only).
+   - This seeds a full sample flow (masters, enquiry, quotation/revision/approval, PO, invoice, payment, delivery).
+3. If the API is unavailable, a warning banner appears in the top shell with a `Retry` action.
+4. Manual flow (if not using demo seed):
+   - Create masters:
+     - Customers
+     - Manufacturers
+     - Products
+   - (Optional) Use `Masters > Imports` and upload sample Excel/CSV.
+   - Create enquiry at `Enquiries > Create Enquiry` with at least one item.
+   - Open enquiry detail and create quotation.
+   - On quotation page:
+     - Create revision
+     - Submit revision
+     - Approve revision
+     - Create Customer PO and/or RTM PO
+   - Open `Commercial`:
+     - Create invoice
+     - Add payment
+     - Attempt overpayment (should show backend 400 message)
+     - Create delivery and add delivery events
+   - Open `Reports`:
+     - Verify KPI cards load from `/reports/kpis`
+     - Download `enquiries.xlsx`, `quotations.xlsx`, `invoices.xlsx`, `payments.xlsx`
 
 ## 5. Production-Like Container Build
 

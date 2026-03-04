@@ -42,6 +42,12 @@ export interface AuthLoginPayload {
 }
 
 export const api = {
+  system: {
+    async health(): Promise<{ status: string }> {
+      const { data } = await http.get<{ status: string }>('/health')
+      return data
+    },
+  },
   auth: {
     async login(payload: AuthLoginPayload): Promise<TokenPairResponse> {
       const { data } = await http.post<TokenPairResponse>('/auth/login', payload)

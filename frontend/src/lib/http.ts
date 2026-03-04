@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const baseURL = import.meta.env.VITE_API_URL || 'http://localhost:8000'
+export const apiBaseUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000'
 
 let accessToken: string | null = null
 
@@ -9,7 +9,7 @@ export function setAccessToken(token: string | null): void {
 }
 
 export const http = axios.create({
-  baseURL,
+  baseURL: apiBaseUrl,
   timeout: 20000,
 })
 
