@@ -1,6 +1,6 @@
 # Byte-compiled / optimized / DLL files
 __pycache__/
-*.py[codz]
+*.py[cod]
 *$py.class
 
 # C extensions
@@ -205,3 +205,24 @@ cython_debug/
 marimo/_static/
 marimo/_lsp/
 __marimo__/
+
+# --- EMS project-specific ---
+# Keep template env tracked, ignore real env files.
+!.env.example
+
+# Local editor/OS noise.
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+
+# Local compose overrides.
+docker-compose.override.yml
+
+# Generated local report exports.
+enquiries.xlsx
+quotations.xlsx
+invoices.xlsx
+payments.xlsx
