@@ -43,6 +43,15 @@ class Settings(BaseSettings):
         alias="DELIVERY_START_REQUIRED_STEP",
     )
 
+    @staticmethod
+    def normalize_database_url(raw_url: str) -> str:
+        normalized = raw_url.strip()
+        if normalized.startswith("postgres://"):
+            normalized = normalized.replace("postgres://", "postgresql://", 1)
+        if normalized.startswith("postgresql://"):
+            normalized = normalized.replace("postgresql://", "postgresql+psycopg://", 1)
+        return normalized
+
     @property
     def cors_origins(self) -> list[str]:
         return [origin.strip() for origin in self.cors_origins_raw.split(",") if origin.strip()]
@@ -50,7 +59,7 @@ class Settings(BaseSettings):
     @property
     def sqlalchemy_database_uri(self) -> str:
         if self.database_url:
-            return self.database_url
+            return self.normalize_database_url(self.database_url)
         return (
             f"postgresql+psycopg://{self.db_user}:{self.db_password}"
             f"@{self.db_host}:{self.db_port}/{self.db_name}"
