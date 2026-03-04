@@ -37,7 +37,7 @@ services:
       - key: DELIVERY_START_REQUIRED_STEP
         value: PO_CREATED
       - key: CORS_ORIGINS
-        value: https://ems-web.onrender.com,http://localhost:3000,http://localhost:8000
+        value: https://ems-web-evfw.onrender.com,https://ems-web.onrender.com,http://localhost:3000,http://localhost:8000
 
   - type: web
     name: ems-web
