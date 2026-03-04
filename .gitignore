@@ -226,3 +226,7 @@ enquiries.xlsx
 quotations.xlsx
 invoices.xlsx
 payments.xlsx
+
+# Frontend source libraries must be tracked.
+!frontend/src/lib/
+!frontend/src/lib/**
